@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Service;
+use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,11 +14,20 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['services']=Service::paginate(3);
+        $profile = Profile::where("user_id", "=", \Auth::user()->id)->first();
+        $search = $request->get('buscar');
+        if($profile == null) {
+            $user = \Auth::user();
+            return redirect('profile/create')->with('message', 'Primero debe registrar su perfil');
+        }
+        $services = Service::where("profile_id", "=", $profile->id)->search($search)->paginate(3);
 
-        return view('services.index',$data);
+        return view('services.index', [
+            "services" => $services,
+            "busqueda" => $search
+        ]);
     }
 
     /**
@@ -50,7 +60,8 @@ class ServiceController extends Controller
         // $serviceData=request()->all();
 
         $serviceData = request()->except('_token');
-        $serviceData['user_id'] = \Auth::user()->id;
+        $profile = Profile::where("user_id", "=", \Auth::user()->id)->first();
+        $serviceData['profile_id'] = $profile->id;
 
         if($request->hasFile('picture_path')){
             $serviceData['picture_path'] = $request->file('picture_path')->store('uploads','public');
@@ -70,7 +81,7 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        //
+        return view('services.show', compact('service'));
     }
 
     /**

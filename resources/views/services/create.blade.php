@@ -25,6 +25,14 @@
 @stop
 
 @section('content')
+<div class="container">
+    @if(Session::has('Message'))
+    <div class="alert alert-success" role="alert">
+        {{Session::get('Message')}}
+    </div>
+    @endif
+</div>
+
 
 <section class="content">
 </section>

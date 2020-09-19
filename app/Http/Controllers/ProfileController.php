@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Profile;
 use App\User;
+use App\Service;
+use App\Purchase;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -36,12 +38,16 @@ class ProfileController extends Controller
             'firstname' => $request->input('firstname', ''),
             'lastname' => $request->input('lastname', ''),
             'address' => $request->input('address', ''),
-            'phone_number' => $request->input('phone_number', '')
+            'phone_number' => $request->input('phone_number', ''),
+            'profession' => $request->input('profession', '')
         ]);
 
         $profile->save();
 
-        return view('home');
+        $search = $request->get('buscar');
+        $services = Service::search($search)->paginate(3);
+
+        return redirect('home');
     }
 
     /**
@@ -52,7 +58,7 @@ class ProfileController extends Controller
      */
     public function show(Profile $profile)
     {
-        //
+        return view('profiles.show', compact('profile'));
     }
 
     /**
@@ -71,9 +77,37 @@ class ProfileController extends Controller
             ]);
         }
 
-        return view('profiles.edit', [
+        $services = Service::where('profile_id', $profile->id)->get();
+        $n_services_finished = 0;
+        $n_services_pending = 0;
+        foreach ($services as $service) {
+            foreach ($service->purchases as $purchase) {
+                if ($purchase->status) {
+                    $n_services_finished = $n_services_finished + 1;
+                } else {
+                    $n_services_pending = $n_services_pending + 1;
+                }
+            }
+        }
+
+        $purchases_pending = Purchase::where([
+            ['profile_id', $profile->id],
+            ['status', 0],
+        ])->get();
+
+        $purchases_finished = Purchase::where([
+            ['profile_id', $profile->id],
+            ['status', 1],
+        ])->get();
+
+        return view('profiles.edit',  [
             'user' => $user,
-            'profile' => $profile
+            'profile' => $profile,
+            'services' => $services,
+            'purchases_pending' => $purchases_pending,
+            'purchases_finished' => $purchases_finished,
+            'services_pending' => $n_services_pending,
+            'services_finished' => $n_services_finished
         ]);
     }
 
@@ -85,20 +119,21 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        $user = \Auth::user();
-        // $user->name = $request->input('name');
-        // $user->email = $request->input('email');
-        // $user->password = $request->input('password');
-        // $user->save();
+         //$user->name = $request->input('name');
+         //$user->email = $request->input('email');
+        //$user->password = $request->input('password');
+        //$user->save();
 
+        $user = \Auth::user();
         $profile = Profile::where('user_id', '=', \Auth::user()->id)->first();
         $profile->firstname = $request->input('firstname', '');
         $profile->lastname = $request->input('lastname', '');
         $profile->address = $request->input('address', '');
         $profile->phone_number = $request->input('phone_number', '');
+        $profile->profession = $request->input('profession', '');
         $profile->save();
 
-        return view('home');
+        return redirect('profile/edit');
     }
 
     /**

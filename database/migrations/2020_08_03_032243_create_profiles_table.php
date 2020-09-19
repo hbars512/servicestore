@@ -22,7 +22,7 @@ class CreateProfilesTable extends Migration
             $table->string('lastname', 90)->nullable();
             $table->string('phone_number', 30)->nullable();
             $table->string('address', 256)->nullable();
-
+            $table ->string('profession', 90) ->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

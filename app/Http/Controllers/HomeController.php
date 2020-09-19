@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Service;
+use App\Profile;
+
 class HomeController extends Controller
 {
     /**
@@ -21,8 +24,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('home');
+        $search = $request->get('buscar');
+        $services = Service::search($search)->paginate(3);
+
+        return view('home', [
+            "services" => $services,
+            "busqueda" => $search
+        ]);
     }
 }

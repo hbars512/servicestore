@@ -8,107 +8,115 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
         <!-- Link de Bootstrap-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-       
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+ 	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <!-- Iconos -->    
         <script src="https://kit.fontawesome.com/b91f129f33.js" crossorigin="anonymous"></script>
-        
         <!-- Styles -->
         <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                height: 100vh;
+            html{
+                box-sizing: border-box;
+                font-size: 62.5%; /*Reser para Rems - 62.5 = 10pxde 16 px ++*/
             }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 25px;
+            *, *::before, *:after{
+                box-sizing: inherit;
             }
-            .links > a {
-                color: white; /* #636b6f*/
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            /* Mi css*/
             .fondo{
-                background-color: #1abc9c;;
-                height: 657px;
+                background-color: #1abc9c;/* Color primary */
             }
-            .fila{
-                background-color: #343a40;
-                height: 76px;
+            .navegacion{
+                background-color: #343a40; /* Color dark */
+            }
+            .navegacion_titulo{
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+            .navegacion_letra{
+                font-size: 2rem;
             }
             .imagen{
-                margin-top: 30px;
+                margin-top: 5rem;
                 text-align: center;
-            
             }
-
             h1 {
                 color: White;
-                text-decoration: overline;
                 text-transform: uppercase;
                 text-align: center;
+                text-decoration: overline;
             }
-            p{
+            p {
                 color: White;
                 text-transform: capitalize;
                 text-align: center;
-                font-size: 30px;
+                font-size: 3rem;
+            }
+            p a{
+                color: White;
+                text-transform: capitalize;
+                text-align: center;
+                font-size: 3rem;
             }
             .iconos{
                 color: White;
-                font-size: 25px;
+                font-size: 2.5rem;
                 text-align: center;
             }
-
-            .top-left{
-                text-align: left;
-                left: 10px;
-                top: 18px;
-                color: White;
-                font-size: 25px;
+            .tabla{
+                margin-top: 10rem; /* Aqui para ponerlo mas abajo la tabla*/
+                padding-top: 1rem;
+                padding-bottom: 2rem;
+                text-align: center;
+                font-size: 3rem;
+                background-color: #343a40; /* Color dark */
+                color: white;
+            }
+            .titulo_tabla{
+                font-size: 4rem;
             }
             .animate__animated.animate__bounce {
                 --animate-duration: 5s;
                 --animate-delay: 5s;
-            }
+            }     
+            .animate__animated.animate__bounce {
+                --animate-duration: 5s;
+                --animate-delay: 5s;
+            }     
             
         </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
     </head>
     <body class= "fondo">
-        <div class="container-fluid">
-            <!--Navegacion-->
-            <div class="row fila">
-                <div class="col top-left">
-                    Service Store 
-                </div>
-                <div class="col">
-                    @if (Route::has('login'))
-                        <div class="top-right links">
-                            @auth
-                                <a href="{{ url('/home') }}">Home</a>
-                            @else
-                                <a href="{{ route('login') }}">Login</a>
-                                @if (Route::has('register'))
-                                <a href="{{ route('register') }}">Register</a>
-                                @endif
-                            @endauth
-                        </div>
-                    @endif
-                </div>
+        <!--Navegacion-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navegacion">
+            <a href="#" class="navbar-brand text-white navegacion_titulo">Service Store</a>
+            <button class= "navbar-toggler" data-target="#menu" data-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ml-auto ">
+                @if (Route::has('login'))
+                    @auth
+                        <li class="nav-item active ">
+                            <a href="{{ url('/home') }}" class="nav-link navegacion_letra">Home</a>
+                        </li>
+                    @else
+                        <li class="nav-item active ">
+                            <a href="{{ route('login') }}" class="nav-link navegacion_letra">Login</a>
+                        </li>
+                        @if (Route::has('register'))
+                        <li class="nav-item active ">
+                            <a href="{{ route('register') }}" class="nav-link navegacion_letra">Register</a>
+                        </li>
+                        @endif
+                    @endauth
+                @endif
+                </ul>
             </div>
+        </nav>
+        <div class="container-fluid">
             <!--Imagen-->
             <div class="row justify-content-center ">
                 <div class="col imagen animate__animated animate__pulse">
@@ -146,12 +154,20 @@
                     </p>
                 </div>
             </div>
+            <!-- Publica -->
+            <div class="row tabla">
+                <div class="col-12 ">
+                    <h2 class="titulo_tabla">Servicios Ofrecidos</h2>
+                </div>
+                @foreach($services as $service)
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 ">
+                        <p><a href="{{ route('service.show', $service) }}">{{$service->title}}</a></p>
+                        <a href="{{ route('service.show', $service) }}">
+                            <img src="{{ asset('storage').'/'.$service->picture_path }}" width="300" alt="Imagen">
+                        </a>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </body>
-
-    <!-- Link de Bootstrap final 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
--->
-
 </html>

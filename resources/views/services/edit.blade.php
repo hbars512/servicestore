@@ -42,7 +42,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="row justify-content-between">
-                            <input type="submit" class="btn btn-primary" value="Agregar">
+                            <input type="submit" class="btn btn-primary" value="Modificar">
 
                             <a class="btn btn-outline-secondary" href="{{route('service.index')}}">Regresar</a>
                         </div>
